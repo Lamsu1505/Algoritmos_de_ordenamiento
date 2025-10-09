@@ -1,0 +1,16 @@
+Algoritmo,Tamaño,Tiempo(ms)
+ShakerSort,10000,58
+DualPivotQuickSort,10000,2
+HeapSort,10000,3
+MergeSort,10000,3
+RadixSort,10000,3
+ShakerSort,100000,7875
+DualPivotQuickSort,100000,4
+HeapSort,100000,9
+MergeSort,100000,6
+RadixSort,100000,4
+ShakerSort,1000000,1016445
+DualPivotQuickSort,1000000,195
+HeapSort,1000000,367
+MergeSort,1000000,352
+RadixSort,1000000,167
