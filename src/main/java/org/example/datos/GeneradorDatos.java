@@ -3,6 +3,7 @@ package org.example.datos;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -15,6 +16,24 @@ public class GeneradorDatos {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nombreArchivo))) {
             for (int i = 0; i < cantidad; i++) {
                 int numero = 10000000 + random.nextInt(90000000); // 8 dígitos
+                escritor.write(String.valueOf(numero));
+                escritor.newLine();
+            }
+        }
+    }
+
+    public static void generarArchivoOrdenado(String nombreArchivo, int cantidad) throws IOException {
+        Random random = new Random();
+        int[] datos = new int[cantidad];
+
+        for (int i = 0; i < cantidad; i++) {
+            datos[i] = 10000000 + random.nextInt(90000000);
+        }
+
+        Arrays.sort(datos);
+
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(nombreArchivo))) {
+            for (int numero : datos) {
                 escritor.write(String.valueOf(numero));
                 escritor.newLine();
             }

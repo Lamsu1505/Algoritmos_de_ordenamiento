@@ -1,0 +1,13 @@
+Algoritmo,Tamaño,Tiempo(µs)
+Binaria,1000000,639
+Ternaria,1000000,513
+Saltos,1000000,410
+Binaria,100000,3
+Ternaria,100000,3
+Saltos,100000,46
+Binaria,100000,3
+Ternaria,100000,2
+Saltos,100000,11
+Binaria,100000,3
+Ternaria,100000,3
+Saltos,100000,11
