@@ -1,0 +1,10 @@
+Algoritmo,Tamaño,Tiempo_ns,Lenguaje
+Binary,10000,9500,Python
+Ternary,10000,5500,Python
+Jump,10000,55799,Python
+Binary,100000,13200,Python
+Ternary,100000,9099,Python
+Jump,100000,127100,Python
+Binary,1000000,8499,Python
+Ternary,1000000,8100,Python
+Jump,1000000,206199,Python
