@@ -1,0 +1,279 @@
+import random
+import time
+import os
+import json
+import csv
+import matplotlib.pyplot as plt
+
+# ==============================
+# ALGORITMOS DE ORDENAMIENTO
+# ==============================
+
+# Fuente: GeeksforGeeks - Shaker Sort (Cocktail Sort)
+# https://www.geeksforgeeks.org/cocktail-sort/
+def shaker_sort(arr):
+    n = len(arr)
+    swapped = True
+    start = 0
+    end = n - 1
+    while swapped:
+        swapped = False
+        for i in range(start, end):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        if not swapped:
+            break
+        swapped = False
+        end -= 1
+        for i in range(end - 1, start - 1, -1):
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                swapped = True
+        start += 1
+    return arr
+
+# Fuente: GeeksforGeeks - Dual Pivot QuickSort
+# https://www.geeksforgeeks.org/dual-pivot-quicksort/
+def dual_pivot_quicksort(arr, low, high):
+    if low < high:
+        lp, rp = partition(arr, low, high)
+        dual_pivot_quicksort(arr, low, lp - 1)
+        dual_pivot_quicksort(arr, lp + 1, rp - 1)
+        dual_pivot_quicksort(arr, rp + 1, high)
+    return arr
+
+def partition(arr, low, high):
+    if arr[low] > arr[high]:
+        arr[low], arr[high] = arr[high], arr[low]
+    j = k = low + 1
+    g = high - 1
+    p = arr[low]
+    q = arr[high]
+    while k <= g:
+        if arr[k] < p:
+            arr[k], arr[j] = arr[j], arr[k]
+            j += 1
+        elif arr[k] >= q:
+            while arr[g] > q and k < g:
+                g -= 1
+            arr[k], arr[g] = arr[g], arr[k]
+            g -= 1
+            if arr[k] < p:
+                arr[k], arr[j] = arr[j], arr[k]
+                j += 1
+        k += 1
+    j -= 1
+    g += 1
+    arr[low], arr[j] = arr[j], arr[low]
+    arr[high], arr[g] = arr[g], arr[high]
+    return j, g
+
+# Fuente: GeeksforGeeks - Heap Sort
+# https://www.geeksforgeeks.org/heap-sort/
+def heapify(arr, n, i):
+    largest = i
+    l = 2 * i + 1
+    r = 2 * i + 2
+    if l < n and arr[l] > arr[largest]:
+        largest = l
+    if r < n and arr[r] > arr[largest]:
+        largest = r
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+
+def heap_sort(arr):
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
+    return arr
+
+# Fuente: GeeksforGeeks - Merge Sort
+# https://www.geeksforgeeks.org/merge-sort/
+def merge_sort(arr):
+    if len(arr) > 1:
+        mid = len(arr) // 2
+        L = arr[:mid]
+        R = arr[mid:]
+        merge_sort(L)
+        merge_sort(R)
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i] < R[j]:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+    return arr
+
+# Fuente: GeeksforGeeks - Radix Sort
+# https://www.geeksforgeeks.org/radix-sort/
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
+    for i in range(n):
+        index = arr[i] // exp
+        count[index % 10] += 1
+    for i in range(1, 10):
+        count[i] += count[i - 1]
+    i = n - 1
+    while i >= 0:
+        index = arr[i] // exp
+        output[count[index % 10] - 1] = arr[i]
+        count[index % 10] -= 1
+        i -= 1
+    for i in range(n):
+        arr[i] = output[i]
+
+def radix_sort(arr):
+    max1 = max(arr)
+    exp = 1
+    while max1 // exp > 0:
+        counting_sort(arr, exp)
+        exp *= 10
+    return arr
+
+# ==============================
+# GENERACIÓN Y LECTURA DE DATOS
+# ==============================
+
+def generar_arreglo(n, filename):
+    if not os.path.exists(filename):
+        print(f"Generando archivo {filename} con {n} elementos...")
+        arr = random.sample(range(10_000_000, 99_999_999), n)
+        with open(filename, "w") as f:
+            f.write("\n".join(map(str, arr)))
+    else:
+        print(f"Archivo {filename} ya existe, se reutilizarán los datos.")
+
+def leer_arreglo(filename):
+    with open(filename, "r") as f:
+        return [int(line.strip()) for line in f]
+
+# ==============================
+# MEDICIÓN DE TIEMPOS
+# ==============================
+
+def medir_tiempo(funcion, arr):
+    inicio = time.perf_counter()
+    funcion(arr)
+    fin = time.perf_counter()
+    return fin - inicio
+
+def medir_tiempo_quicksort(funcion, arr):
+    inicio = time.perf_counter()
+    funcion(arr, 0, len(arr) - 1)
+    fin = time.perf_counter()
+    return fin - inicio
+
+# ==============================
+# EJECUCIÓN PRINCIPAL
+# ==============================
+
+tamaños = [10_000, 100_000, 1_000_000]
+archivos = [f"datos_{n}.txt" for n in tamaños]
+
+for n, archivo in zip(tamaños, archivos):
+    generar_arreglo(n, archivo)
+
+resultados = {"Shaker": [], "DualPivotQuick": [], "Heap": [], "Merge": [], "Radix": []}
+
+for n, archivo in zip(tamaños, archivos):
+    arr_original = leer_arreglo(archivo)
+    print(f"\n🔹 Ordenando arreglo de {n} elementos...")
+
+    for nombre, funcion in [
+        ("Shaker", shaker_sort),
+        ("Heap", heap_sort),
+        ("Merge", merge_sort),
+        ("Radix", radix_sort)
+    ]:
+        arr = arr_original.copy()
+        tiempo = medir_tiempo(funcion, arr)
+        resultados[nombre].append(tiempo)
+        print(f"   {nombre} Sort: {tiempo:.3f} s")
+
+    # Dual-Pivot QuickSort necesita su medición aparte
+    arr = arr_original.copy()
+    tiempo_qs = medir_tiempo_quicksort(dual_pivot_quicksort, arr)
+    resultados["DualPivotQuick"].append(tiempo_qs)
+    print(f"   Dual-Pivot QuickSort: {tiempo_qs:.3f} s")
+
+# ==============================
+# GUARDAR RESULTADOS CSV / JSON
+# ==============================
+
+csv_filename = "resultados_ordenamientos.csv"
+json_filename = "resultados_ordenamientos.json"
+
+with open(csv_filename, "w", newline="") as csvfile:
+    writer = csv.writer(csvfile)
+    writer.writerow(["Tamaño", "Shaker", "DualPivotQuick", "Heap", "Merge", "Radix"])
+    for i, n in enumerate(tamaños):
+        writer.writerow([n, resultados["Shaker"][i], resultados["DualPivotQuick"][i],
+                         resultados["Heap"][i], resultados["Merge"][i], resultados["Radix"][i]])
+
+with open(json_filename, "w") as jf:
+    json.dump({"tamaños": tamaños, "resultados": resultados}, jf, indent=4)
+
+print(f"\n📁 Resultados guardados en: {csv_filename} y {json_filename}")
+
+# ==============================
+# GRÁFICO COMPARATIVO
+# ==============================
+
+etiquetas = [str(t) for t in tamaños]
+x = range(len(tamaños))
+ancho = 0.15
+colores = ["#4e79a7", "#f28e2b", "#e15759", "#76b7b2", "#59a14f"]
+
+plt.figure(figsize=(12, 6))
+for idx, (alg, color) in enumerate(zip(resultados.keys(), colores)):
+    plt.bar([i + (idx - 2) * ancho for i in x], resultados[alg], width=ancho, label=alg, color=color)
+
+for idx, alg in enumerate(resultados.keys()):
+    for i, valor in enumerate(resultados[alg]):
+        plt.text(i + (idx - 2) * ancho, valor + 0.01, f"{valor:.2f}s", ha='center', fontsize=8)
+
+plt.xticks(x, etiquetas)
+plt.ylabel("Tiempo de ejecución (segundos)")
+plt.xlabel("Tamaño del arreglo")
+plt.title("Comparación de algoritmos de ordenamiento en Python")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# ==============================
+# EXPLICACIÓN FINAL
+# ==============================
+
+print("""
+🧩 DIFERENCIAS ENTRE LENGUAJES COMPILADOS E INTERPRETADOS:
+
+Los lenguajes compilados (como C++ o Go) traducen el código fuente a código máquina
+antes de ejecutarse, lo que permite aprovechar al máximo el hardware y optimizar
+las operaciones matemáticas, de memoria y recursividad profunda.
+
+En contraste, Python interpreta el código en tiempo de ejecución, generando
+una sobrecarga por la traducción constante de instrucciones y manejo dinámico
+de tipos, lo que se traduce en tiempos de ejecución más altos en algoritmos
+de ordenamiento intensivos en CPU como MergeSort o HeapSort.
+
+Por tanto, al ejecutar los mismos algoritmos en C++ o Go, se observarán
+tiempos significativamente menores, aunque la lógica sea idéntica.
+""")

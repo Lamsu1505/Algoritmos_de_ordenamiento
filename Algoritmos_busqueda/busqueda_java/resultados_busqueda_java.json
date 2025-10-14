@@ -1,0 +1,47 @@
+[
+  {
+    "Algoritmo": "Binary",
+    "Tamaño": 10000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Ternary",
+    "Tamaño": 10000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Jump",
+    "Tamaño": 10000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Binary",
+    "Tamaño": 100000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Ternary",
+    "Tamaño": 100000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Jump",
+    "Tamaño": 100000,
+    "Tiempo_ns": 996100
+  },
+  {
+    "Algoritmo": "Binary",
+    "Tamaño": 1000000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Ternary",
+    "Tamaño": 1000000,
+    "Tiempo_ns": 0
+  },
+  {
+    "Algoritmo": "Jump",
+    "Tamaño": 1000000,
+    "Tiempo_ns": 510400
+  }
+]
