@@ -1,7 +1,4 @@
-import model.Node;
-import model.Primer_link;
-import model.Segundo_link1;
-import model.Tercer_link;
+import model.*;
 
 public class main {
 
@@ -75,7 +72,7 @@ public class main {
         }
         System.out.println();
 
-        Segundo_link1 sl2 = new Segundo_link1();
+        Segundo_link2 sl2 = new Segundo_link2();
         sl2.relativeSort(b1, b2);
 
 
