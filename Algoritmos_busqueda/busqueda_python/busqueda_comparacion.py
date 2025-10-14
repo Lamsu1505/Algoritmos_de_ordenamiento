@@ -129,12 +129,15 @@ for n, archivo in zip(tamaños, archivos):
 csv_filename = "resultados_busquedas.csv"
 json_filename = "resultados_busquedas.json"
 
-# Guardar en CSV
+# Guardar en CSV con el nuevo formato
 with open(csv_filename, "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(["Tamaño", "Binaria", "Ternaria", "Saltos"])
+    writer.writerow(["Algoritmo", "Tamaño", "Tiempo_ns", "Lenguaje"])
     for i, n in enumerate(tamaños):
-        writer.writerow([n, resultados["Binaria"][i], resultados["Ternaria"][i], resultados["Saltos"][i]])
+        # Convertir de segundos a nanosegundos
+        writer.writerow(["Binary", n, int(resultados["Binaria"][i] * 1_000_000_000), "Python"])
+        writer.writerow(["Ternary", n, int(resultados["Ternaria"][i] * 1_000_000_000), "Python"])
+        writer.writerow(["Jump", n, int(resultados["Saltos"][i] * 1_000_000_000), "Python"])
 
 # Guardar en JSON
 data_json = {
