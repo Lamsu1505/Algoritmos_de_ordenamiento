@@ -191,14 +191,13 @@ archivos = [f"datos_{n}.txt" for n in tamaños]
 for n, archivo in zip(tamaños, archivos):
     generar_arreglo(n, archivo)
 
-resultados = {"Shaker": [], "DualPivotQuick": [], "Heap": [], "Merge": [], "Radix": []}
+resultados = {"DualPivotQuick": [], "Heap": [], "Merge": [], "Radix": []}
 
 for n, archivo in zip(tamaños, archivos):
     arr_original = leer_arreglo(archivo)
     print(f"\n🔹 Ordenando arreglo de {n} elementos...")
 
     for nombre, funcion in [
-        ("Shaker", shaker_sort),
         ("Heap", heap_sort),
         ("Merge", merge_sort),
         ("Radix", radix_sort)
@@ -223,9 +222,9 @@ json_filename = "resultados_ordenamientos.json"
 
 with open(csv_filename, "w", newline="") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(["Tamaño", "Shaker", "DualPivotQuick", "Heap", "Merge", "Radix"])
+    writer.writerow(["Tamaño", "DualPivotQuick", "Heap", "Merge", "Radix"])
     for i, n in enumerate(tamaños):
-        writer.writerow([n, resultados["Shaker"][i], resultados["DualPivotQuick"][i],
+        writer.writerow([n, resultados["DualPivotQuick"][i],
                          resultados["Heap"][i], resultados["Merge"][i], resultados["Radix"][i]])
 
 with open(json_filename, "w") as jf:
